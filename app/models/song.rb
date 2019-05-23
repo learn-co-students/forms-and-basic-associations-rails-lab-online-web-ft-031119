@@ -1,5 +1,6 @@
 class Song < ActiveRecord::Base
   # add associations here
+  has_many :notes
   belongs_to :artist
   belongs_to :genre
 
@@ -19,11 +20,18 @@ class Song < ActiveRecord::Base
       self.artist ? self.artist.name : ""
    end
 
-   def note_contents=(content)
-   	song.notes.map(&:content)
+   def note_contents=(notes)
+   		notes.each do |note|
+   		
+   		if note.strip != ''	
+   		self.notes.build(content: note)
+   		end
+   	 end
+
    end
 
    def note_contents
+   	self.notes.map {|note| note.content }
    end
  
 
